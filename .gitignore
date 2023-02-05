@@ -111,7 +111,7 @@ env.bak/
 venv.bak/
 
 #ini files
-.ini
+*.ini
 
 # Spyder project settings
 .spyderproject
