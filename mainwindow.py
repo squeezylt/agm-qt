@@ -1,5 +1,5 @@
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTreeWidgetItem, QTreeWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTreeWidgetItem, QTreeWidget, QListWidgetItem, QPushButton
 from PyQt5.QtCore import QSettings, pyqtSignal, QDir
 import maincontrol
 
@@ -15,9 +15,10 @@ class MainWindow(QMainWindow):
 
     mod_path_set = pyqtSignal(str)   
     settings_updated = pyqtSignal()
+    mod_updated = pyqtSignal()
     settings = QSettings("mod.ini", QSettings.IniFormat)
     mc = maincontrol.MainControl()
-    mod_path = str
+    mod_path = ""
 
     def __init__(self, parent=None):
 
@@ -26,10 +27,12 @@ class MainWindow(QMainWindow):
         
         self.mod_path_set.connect(self.changeModPath) 
         self.settings_updated.connect(self.saveSettings)
+        self.add_selected_button.clicked.connect(self.handleAddSelected)
 
         self.xtree = XTreeWidget(QTreeWidget)
         self.mainlayout.addWidget(self.xtree)
         self.xtree.itemChecked.connect(self.handleModToggled)
+        self.xtree.itemClicked.connect(self.handleModSelected)
 
         self.loadSettings()
         
@@ -95,6 +98,24 @@ class MainWindow(QMainWindow):
         #manually set item data
         #should also probably make this role a const definition
         item.setData(0, QtCore.Qt.UserRole + 1, new_path)
+        
+    def handleModSelected(self, item, column):
+        path = item.data(column, QtCore.Qt.UserRole + 1)
+        name = item.text(column)
+        print("selected" + name)
+        self.mc.setSelectedMod(path,name)
+        
+    #toolside stuff
+    
+    #behavior when we add a mod to the working list
+    def handleAddSelected(self):
+        print(0)
+        active_mod = self.mc.getSelectedMod()
+        if not str(active_mod[0]):
+            return
+        print("Active mod is" + str(active_mod[1]))
+        item = QListWidgetItem(active_mod[1])
+        self.active_list.addItem(item)
         
                 
 class TreeWidgetItem(QTreeWidgetItem):

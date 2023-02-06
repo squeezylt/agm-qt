@@ -3,8 +3,11 @@ from pathlib import Path
 
 class MainControl:
 
-    mod_dir = str
+    mod_dir = ""
     mod_folders = []
+    current_mod_name = ""
+    current_mod_path = ""
+    
 
     def __init__(self, parent=None):
         print('init')
@@ -54,6 +57,13 @@ class MainControl:
         print("renaming " + mod_path + " to " + new_mod_path)
         os.rename(mod_path,new_mod_path)
         return new_mod_path
+    
+    def setSelectedMod(self,path:str,name:str):
+        self.current_mod_path = path
+        self.current_mod_name = name
+        
+    def getSelectedMod(self):
+        return self.current_mod_path, self.current_mod_name
         
 
         
