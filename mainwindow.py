@@ -28,6 +28,8 @@ class MainWindow(QMainWindow):
         self.mod_path_set.connect(self.changeModPath) 
         self.settings_updated.connect(self.saveSettings)
         self.add_selected_button.clicked.connect(self.handleAddSelected)
+        self.clear_button.clicked.connect(self.handleClearButton)
+        self.remove_selected_button.clicked.connect(self.handleRemoveSelected)
 
         self.xtree = XTreeWidget(QTreeWidget)
         self.mainlayout.addWidget(self.xtree)
@@ -124,6 +126,16 @@ class MainWindow(QMainWindow):
                 return 
         
         self.active_list.addItem(item)
+        
+    def handleClearButton(self):
+        self.active_list.clear()
+        
+    def handleRemoveSelected(self):
+        current = self.active_list.currentItem()
+        row = self.active_list.row(current)
+        if current:   
+            self.active_list.takeItem(row)
+        
         
                 
 class TreeWidgetItem(QTreeWidgetItem):
