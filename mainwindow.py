@@ -115,6 +115,14 @@ class MainWindow(QMainWindow):
             return
         print("Active mod is" + str(active_mod[1]))
         item = QListWidgetItem(active_mod[1])
+        item.setData(QtCore.Qt.UserRole, active_mod[0])
+        
+        #add only if the list doesnt have this mod name already
+        for i in range (self.active_list.count()):
+            print("looping")
+            if self.active_list.item(i).data(QtCore.Qt.UserRole) == active_mod[0]:
+                return 
+        
         self.active_list.addItem(item)
         
                 
