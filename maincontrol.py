@@ -69,3 +69,7 @@ class MainControl:
         
     def isFolderDisabled(self,folder_name : str):
         return "DISABLED" in folder_name
+
+    #given full original path, and new name
+    def renameFolder(self, mod_path, new_name):
+        is_disabled = self.isFolderDisabled(os.path.basebase(mod_path))
