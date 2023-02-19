@@ -98,7 +98,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit"/>
+                <widget class="QLineEdit" name="rename_edit"/>
                </item>
               </layout>
              </item>
@@ -231,6 +231,15 @@
          <attribute name="title">
           <string>Merge Tool</string>
          </attribute>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Coming Soon. (Not implemented yet)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
@@ -244,7 +253,7 @@
      <x>0</x>
      <y>0</y>
      <width>941</width>
-     <height>22</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -7,8 +7,15 @@ import maincontrol
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import os.path
 import sys
+import filecontrol as fc
+import mod_data
 
 #made by squeezylt
+
+
+#usage in qt embedded widget data
+DATA_ROLE = QtCore.Qt.UserRole + 1
+EXTRA_DATA_ROLE = QtCore.Qt.UserRole + 2 #reserved, unused?
 
 
 class MainWindow(QMainWindow):
@@ -16,6 +23,9 @@ class MainWindow(QMainWindow):
     mod_path_set = pyqtSignal(str)   
     settings_updated = pyqtSignal()
     mod_updated = pyqtSignal()
+    cat_updated = pyqtSignal(str)
+    
+    #should change to not use hardcoded ini file. use system abstracted format
     settings = QSettings("mod.ini", QSettings.IniFormat)
     mc = maincontrol.MainControl()
     mod_path = ""
@@ -30,6 +40,7 @@ class MainWindow(QMainWindow):
         self.add_selected_button.clicked.connect(self.handleAddSelected)
         self.clear_button.clicked.connect(self.handleClearButton)
         self.remove_selected_button.clicked.connect(self.handleRemoveSelected)
+        self.mod_rename_button.clicked.connect(self.handleModRenameApply)
 
         self.xtree = XTreeWidget(QTreeWidget)
         self.mainlayout.addWidget(self.xtree)
@@ -82,7 +93,7 @@ class MainWindow(QMainWindow):
             tree_item.setFlags(tree_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
             mod_name = os.path.basename(item)
             #save absolute path in item itself because why not. won't clutter much
-            tree_item.setData(0,QtCore.Qt.UserRole + 1,item)
+            tree_item.setData(0,DATA_ROLE,item)
 
             if mod_list[item] == False:
                 tree_item.setCheckState(0,QtCore.Qt.Unchecked)
@@ -98,36 +109,38 @@ class MainWindow(QMainWindow):
     def handleModToggled(self, item, column):
         print("Mod Toggled")
         selected = bool(item.checkState(column))
-        path = item.data(column, QtCore.Qt.UserRole + 1)
+        path = item.data(column, DATA_ROLE)
         #print(str(selected) + " " + path)
         new_path = self.mc.toggleMod(path, selected)
         if (not new_path):
             return
 
-        item.setData(0, QtCore.Qt.UserRole + 1, new_path)
+        item.setData(0, DATA_ROLE, new_path)
         
     def handleModSelected(self, item, column):
-        path = item.data(column, QtCore.Qt.UserRole + 1)
+        #path
+        path = item.data(column, DATA_ROLE)
         name = item.text(column)
+        enabled = self.mc.isFolderDisabled(path)
+        
         print("selected" + name)
-        self.mc.setSelectedMod(path,name)
+        self.mc.setSelectedMod(mod_data.ModClass(path,name,enabled))
         
     #toolside stuff
     
     #behavior when we add a mod to the working list
     def handleAddSelected(self):
-        print(0)
         active_mod = self.mc.getSelectedMod()
-        if not str(active_mod[0]):
+        if not str(active_mod.modpath):
             return
-        print("Active mod is" + str(active_mod[1]))
-        item = QListWidgetItem(active_mod[1])
-        item.setData(QtCore.Qt.UserRole, active_mod[0])
+        print("Active mod is" + active_mod.modname)
+        item = QListWidgetItem(active_mod.modname)
+        item.setData(DATA_ROLE, active_mod.modpath)
         
         #add only if the list doesnt have this mod name already
         for i in range (self.active_list.count()):
             print("looping")
-            if self.active_list.item(i).data(QtCore.Qt.UserRole) == active_mod[0]:
+            if self.active_list.item(i).data(DATA_ROLE) == active_mod.modpath:
                 return 
         
         self.active_list.addItem(item)
@@ -140,6 +153,28 @@ class MainWindow(QMainWindow):
         row = self.active_list.row(current)
         if current:   
             self.active_list.takeItem(row)
+            
+    def handleModRenameApply(self):
+        #str. name not path
+        new_mod_name = self.rename_edit.text()
+        print("New mod name is " + new_mod_name)
+        if (not new_mod_name):
+            print("mod name null, returing")
+            return
+        #get top, this only works with 1 mod at a time anyway
+        if (self.active_list.count() != 1):
+            print("active list not size 1. returning")
+            return
+        mod_selected = self.active_list.item(0)
+        mod_path = mod_selected.data(DATA_ROLE)
+        mod_name = mod_selected.text()
+        print("rename debug...." + mod_path + "    " + mod_name)
+        
+        #call filecontrol to rename this trash
+        fc.renameFolder(mod_path,new_mod_name)
+        
+        
+        
         
         
                 

@@ -1,13 +1,13 @@
 import os
 from pathlib import Path
 import filecontrol as fc
+import mod_data
 
 class MainControl:
 
     mod_dir = ""
     mod_folders = []
-    current_mod_name = ""
-    current_mod_path = ""
+    selected_mod = None
     
 
     def __init__(self, parent=None):
@@ -55,12 +55,14 @@ class MainControl:
         new_mod_path = fc.renameFolder(mod_path,item_stripped)
         return new_mod_path
     
-    def setSelectedMod(self,path:str,name:str):
-        self.current_mod_path = path
-        self.current_mod_name = name
+    def setSelectedMod(self,selected_mod):
+        #self.current_mod_path = path
+        #self.current_mod_name = name
+        self.selected_mod = selected_mod
         
     def getSelectedMod(self):
-        return self.current_mod_path, self.current_mod_name
+        #return self.current_mod_path, self.current_mod_name, self.current_mod_disabled_status
+        return self.selected_mod
         
 
         
@@ -68,5 +70,7 @@ class MainControl:
         return "DISABLED" in folder_name
 
     #given full original path, and new name
-    def renameFolder(self, mod_path, new_name):
-        is_disabled = self.isFolderDisabled(os.path.basebase(mod_path))
+    #def renameFolder(self, mod_path, new_name):
+    #    is_disabled = self.isFolderDisabled(os.path.basebase(mod_path))
+
+
