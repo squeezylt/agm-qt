@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import filecontrol as fc
 
 class MainControl:
 
@@ -13,14 +14,9 @@ class MainControl:
         print('init')
 
     #private
-    def __populateModFolders(self, path = mod_dir):
-        mod_folders = []
-        for file in os.listdir(self.mod_dir):
-            d = os.path.join(self.mod_dir, file)
-            if os.path.isdir(d):
-                #print(d)
-                mod_folders.append(d)
-        self.mod_folders = mod_folders
+    def __populateModFolders(self, path):
+       
+        self.mod_folders = fc.getSubfolders(path)
         
 
     def setModDir(self, path : str):
@@ -32,9 +28,13 @@ class MainControl:
       
         mod_dict = {}
         
-        self.__populateModFolders()
+        self.__populateModFolders(self.mod_dir)
+        if (not self.mod_folders):
+            print("mod folders empty")
+            return
         for folder in self.mod_folders:
             if self.isFolderDisabled(folder):
+                
                 mod_dict[folder] = False
             else:
                 mod_dict[folder] = True
@@ -45,17 +45,14 @@ class MainControl:
         if not os.path.isdir(mod_path):
             return
         base_dir_name = os.path.basename(mod_path)
-        base_path_name = Path(mod_path).parent
+
         if state:
             item_stripped = base_dir_name.replace("DISABLED","")
         else:
             item_stripped = "DISABLED" + base_dir_name
-            
-        #os.name(mod_path, )
-        new_mod_path = os.path.join(base_path_name,item_stripped)
-        
-        print("renaming " + mod_path + " to " + new_mod_path)
-        os.rename(mod_path,new_mod_path)
+
+        print("item stripped is " + item_stripped)
+        new_mod_path = fc.renameFolder(mod_path,item_stripped)
         return new_mod_path
     
     def setSelectedMod(self,path:str,name:str):

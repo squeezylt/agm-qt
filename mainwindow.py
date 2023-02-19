@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import os.path
 import sys
 
-#made by squeezyxl
+#made by squeezylt
 
 
 class MainWindow(QMainWindow):
@@ -71,6 +71,10 @@ class MainWindow(QMainWindow):
 
     def updateModTreeWidget(self):
         mod_list = self.mc.getModDataStructure()
+        
+        if (not mod_list):
+            print("mod list empty")
+            return
         #rowcount = self.mod_tree.topLevelItemCount()
         for item in mod_list:
 
@@ -95,10 +99,11 @@ class MainWindow(QMainWindow):
         print("Mod Toggled")
         selected = bool(item.checkState(column))
         path = item.data(column, QtCore.Qt.UserRole + 1)
-        print(str(selected) + " " + path)
+        #print(str(selected) + " " + path)
         new_path = self.mc.toggleMod(path, selected)
-        #manually set item data
-        #should also probably make this role a const definition
+        if (not new_path):
+            return
+
         item.setData(0, QtCore.Qt.UserRole + 1, new_path)
         
     def handleModSelected(self, item, column):
