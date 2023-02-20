@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import filecontrol as fc
 import mod_data
+import cat_parser as cat
 
 class MainControl:
 
@@ -35,6 +36,7 @@ class MainControl:
             #print("populating mod")
             mod_class = mod_data.ModClass(os.path.basename(mod),mod)
             mod_class.setEnable(not self.isFolderDisabled(mod))
+            mod_class.setCategories(cat.getCategories(mod))
             if not mod_class.enabled():
                 curr_name = os.path.basename(mod)
                 item_stripped = curr_name.replace("DISABLED","")
@@ -92,7 +94,6 @@ class MainControl:
         disable_handled_name_for_path = self.handleDisablePathFormat(id,new_name)
         new_path =fc.renameFolder(mod_path,disable_handled_name_for_path)
         mod.setName(new_name)
-        print("new path for mod is " + new_path)
         mod.setPath(new_path)
         
     def getModName(self, id):

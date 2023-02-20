@@ -92,7 +92,7 @@ class MainWindow(QMainWindow):
         dir = QDir(fname)
         if dir.exists():
             self.mod_path_set.emit(fname)
-
+    '''
     def updateModTreeWidget(self):
         self.xtree.clear()
         mod_list = self.mc.getModDataStructure()
@@ -114,7 +114,82 @@ class MainWindow(QMainWindow):
                 tree_item.setCheckState(0,QtCore.Qt.Checked)
             
             tree_item.setText(0,mod_name)
+            categories = item.getCategories()
+            for cct in categories:
+                print(cct)
             self.xtree.addTopLevelItem(tree_item)
+'''
+    def updateModTreeWidget(self):
+        self.xtree.clear()
+        mod_list = self.mc.getModDataStructure()
+        
+        if (not mod_list):
+            print("mod list empty")
+            return
+        print("mod_list not empty")
+        
+        #all unlisted items can use this
+        top_item = TreeWidgetItem()
+        top_item.setFlags(top_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
+        top_item.setText(0,"Unlisted")
+    
+        for item in mod_list.items():
+            
+            #bottom level item
+            tree_item = TreeWidgetItem()
+            tree_item.setFlags(tree_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
+            mod_name = item.name()
+            tree_item.setData(0,DATA_ROLE,item.id())
+
+            if not item.enabled():
+                tree_item.setCheckState(0,QtCore.Qt.Unchecked)
+            else:
+                tree_item.setCheckState(0,QtCore.Qt.Checked)
+            
+            tree_item.setText(0,mod_name)
+            categories = item.getCategories()
+            cat_top_item = None
+
+            if len(categories) == 0:
+                top_item.addChild(tree_item)
+            
+            
+            else:
+                first_cat = categories[0]
+                #see if the top level item already exists in the tree
+                find_top_cat = self.xtree.findItems(first_cat,QtCore.Qt.MatchFlag.MatchExactly,0)
+                if len(find_top_cat) == 0:
+                    cat_top_item = TreeWidgetItem()
+                    cat_top_item.setFlags(cat_top_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
+                    cat_top_item.setText(0,first_cat)
+                    parent_item = cat_top_item
+                else:
+                    cat_top_item = find_top_cat[0]
+                    parent_item = cat_top_item
+            
+            for cct in categories[1:]:
+                print('iterating ' + cct + ' category')
+                #find_child_item = self.xtree.findItems(first_cat,QtCore.Qt.MatchFlag.MatchExactly,0)
+                child_item = parent_item.child(0)
+               
+                if child_item and child_item.text(0) == cct:
+                    print('Found child item for' + child_item.text(0))
+                    child_item = parent_item.child(0)
+                else:
+                    
+                    child_item = TreeWidgetItem()
+                    child_item.setFlags(cat_top_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
+                    child_item.setText(0,cct)
+                    parent_item.addChild(child_item)
+                parent_item = child_item
+            #getting sloppy but oh well, slap the actual mod on it now
+            if len(categories) != 0:
+                parent_item.addChild(tree_item)
+                
+            self.xtree.addTopLevelItem(top_item)
+            if len(categories) != 0:
+                self.xtree.addTopLevelItem(cat_top_item)
+
 
             
     def handleModToggled(self, item, column):

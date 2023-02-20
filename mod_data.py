@@ -42,6 +42,9 @@ class ModClass:
     def setCategories(self, categories):
         self.categories = categories
         
+    def getCategories(self):
+        return self.categories
+        
     def setEnable(self,toggle):
         self.modenabled=toggle
             
