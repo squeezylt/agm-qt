@@ -96,12 +96,10 @@ class MainWindow(QMainWindow):
 
             if not item.enabled():
                 tree_item.setCheckState(0,QtCore.Qt.Unchecked)
-                item_stripped = mod_name.replace("DISABLED","")
-                tree_item.setText(0,item_stripped)
             else:
                 tree_item.setCheckState(0,QtCore.Qt.Checked)
-                tree_item.setText(0,mod_name)
             
+            tree_item.setText(0,mod_name)
             self.xtree.addTopLevelItem(tree_item)
 
             
