@@ -37,6 +37,7 @@ class MainWindow(QMainWindow):
         
         self.mod_path_set.connect(self.changeModPath) 
         self.settings_updated.connect(self.saveSettings)
+        self.mod_updated.connect(self.updateModTreeWidget)
         self.add_selected_button.clicked.connect(self.handleAddSelected)
         self.clear_button.clicked.connect(self.handleClearButton)
         self.remove_selected_button.clicked.connect(self.handleRemoveSelected)
@@ -81,6 +82,7 @@ class MainWindow(QMainWindow):
             self.mod_path_set.emit(fname)
 
     def updateModTreeWidget(self):
+        self.xtree.clear()
         mod_list = self.mc.getModDataStructure()
         
         if (not mod_list):
@@ -157,15 +159,12 @@ class MainWindow(QMainWindow):
             print("active list not size 1. returning")
             return
         mod_selected = self.active_list.item(0)
-        mod_path = mod_selected.data(DATA_ROLE)
-        mod_name = mod_selected.text()
-        print("rename debug...." + mod_path + "    " + mod_name)
+        mod_id = mod_selected.data(DATA_ROLE)
         
-        #call filecontrol to rename this trash
-        fc.renameFolder(mod_path,new_mod_name)
+        self.mc.renameMod(mod_id, new_mod_name)
         
-        
-        
+        #trigger tree redraw
+        self.mod_updated.emit()
         
         
                 

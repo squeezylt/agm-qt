@@ -71,15 +71,13 @@ class MainControl:
             return False
         if state is mod_state:
             return False
-
-        if not mod_state:
-            item_stripped = mod_name.replace("DISABLED","")
-        else:
-            item_stripped = "DISABLED" + mod_name
-        
-        new_mod_path = fc.renameFolder(mod_path,item_stripped)
-        mod.setPath(new_mod_path)
+            
+        #verbose lol    
         mod.setEnable(state)
+        disable_handled_name_for_path = self.handleDisablePathFormat(mod_id,mod_name)
+        
+        new_mod_path = fc.renameFolder(mod_path,disable_handled_name_for_path)
+        mod.setPath(new_mod_path)
         return True
     
     def setSelectedMod(self,id):
@@ -87,8 +85,33 @@ class MainControl:
         
     def getSelectedMod(self):
         return self.selected_mod
+    
+    def renameMod(self,id,new_name):
+        mod = self.mod_container.getModById(id)
+        mod_path = mod.path()
+        disable_handled_name_for_path = self.handleDisablePathFormat(id,new_name)
+        new_path =fc.renameFolder(mod_path,disable_handled_name_for_path)
+        mod.setName(new_name)
+        print("new path for mod is " + new_path)
+        mod.setPath(new_path)
         
 
         
     def isFolderDisabled(self,folder_name : str):
         return "DISABLED" in folder_name
+    
+    #given a original path, and a new name,
+    #format the new path, and add the 'DISABLED' line if needed
+
+    def handleDisablePathFormat(self, id, mod_name):
+        mod = self.mod_container.getModById(id)
+        mod_state = mod.enabled()
+        if not mod:
+            print("Couldn't find mod by id. Error. Id tried was " + id.toString())
+            return
+   
+        #if mod is enabled.
+        if not mod_state:
+            return "DISABLED" + mod_name
+            
+        return mod_name
