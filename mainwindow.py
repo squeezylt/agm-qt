@@ -126,14 +126,14 @@ class MainWindow(QMainWindow):
         active_mod = self.mc.getSelectedMod()
         if not str(active_mod.modpath):
             return
-        print("Active mod is" + active_mod.modname)
-        item = QListWidgetItem(active_mod.modname)
-        item.setData(DATA_ROLE, active_mod.modpath)
+        print("Active mod is" + active_mod.name())
+        item = QListWidgetItem(active_mod.name())
+        item.setData(DATA_ROLE, active_mod.id())
         
         #add only if the list doesnt have this mod name already
         for i in range (self.active_list.count()):
             print("looping")
-            if self.active_list.item(i).data(DATA_ROLE) == active_mod.modpath:
+            if self.active_list.item(i).data(DATA_ROLE) == active_mod.id():
                 return 
         
         self.active_list.addItem(item)
