@@ -1,5 +1,6 @@
 import configparser
 import os
+from collections import OrderedDict
 
 def writeCategory(mod_folder_path, level, label):
     config = configparser.ConfigParser()
@@ -8,6 +9,10 @@ def writeCategory(mod_folder_path, level, label):
     if not config.has_section("CATEGORIES"):
         config.add_section("CATEGORIES")
     config.set("CATEGORIES", "Level" + str(level), label)
+    
+    #Order the content of each section alphabetically
+    for section in config._sections:
+        config._sections[section] = OrderedDict(sorted(config._sections[section].items(), key=lambda t: t[0]))
     
     with open(path, 'w') as configfile:
         config.write(configfile)
@@ -24,8 +29,7 @@ def getCategories(mod_folder_path):
     return categories
 
 def main():
-    #print, debug stuff
-    pass
+    pass #debug
 
 if __name__ == "__main__":
     main()
