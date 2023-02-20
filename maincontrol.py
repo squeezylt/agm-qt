@@ -24,22 +24,26 @@ class MainControl:
 
     
 
-    def getModDataStructure(self):
+    def populateModDataStructure(self):
       
-        mod_dict = {}
+        mod_list = []
         
         self.__populateModFolders(self.mod_dir)
         if (not self.mod_folders):
             print("mod folders empty")
             return
-        for folder in self.mod_folders:
-            if self.isFolderDisabled(folder):
+        for mod in self.mod_folders:
+            if self.isFolderDisabled(mod):
                 
                 mod_dict[folder] = False
+                
             else:
                 mod_dict[folder] = True
             
         return mod_dict
+    
+    def getModDataStructure(self):
+        print(0)
     
     def toggleMod(self,mod_path, state):
         if not os.path.isdir(mod_path):
