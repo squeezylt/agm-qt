@@ -86,22 +86,21 @@ class MainWindow(QMainWindow):
         if (not mod_list):
             print("mod list empty")
             return
-        #rowcount = self.mod_tree.topLevelItemCount()
-        for item in mod_list:
+        print("mod_list not empty")
+        for item in mod_list.items():
 
             tree_item = TreeWidgetItem()
             tree_item.setFlags(tree_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
-            mod_name = os.path.basename(item)
-            #save absolute path in item itself because why not. won't clutter much
-            tree_item.setData(0,DATA_ROLE,item)
+            mod_name = item.name()
+            tree_item.setData(0,DATA_ROLE,item.id())
 
-            if mod_list[item] == False:
+            if not item.enabled():
                 tree_item.setCheckState(0,QtCore.Qt.Unchecked)
                 item_stripped = mod_name.replace("DISABLED","")
                 tree_item.setText(0,item_stripped)
             else:
                 tree_item.setCheckState(0,QtCore.Qt.Checked)
-                tree_item.setText(0,os.path.basename(mod_name))
+                tree_item.setText(0,mod_name)
             
             self.xtree.addTopLevelItem(tree_item)
 
@@ -109,22 +108,16 @@ class MainWindow(QMainWindow):
     def handleModToggled(self, item, column):
         print("Mod Toggled")
         selected = bool(item.checkState(column))
-        path = item.data(column, DATA_ROLE)
-        #print(str(selected) + " " + path)
-        new_path = self.mc.toggleMod(path, selected)
-        if (not new_path):
-            return
+        id = item.data(column, DATA_ROLE)
+        success = self.mc.toggleMod(id, selected)
+        if (not success):
+            print("error toggling mod")
 
-        item.setData(0, DATA_ROLE, new_path)
         
     def handleModSelected(self, item, column):
         #path
-        path = item.data(column, DATA_ROLE)
-        name = item.text(column)
-        enabled = self.mc.isFolderDisabled(path)
-        
-        print("selected" + name)
-        self.mc.setSelectedMod(mod_data.ModClass(path,name,enabled))
+        id = item.data(column, DATA_ROLE)
+        self.mc.setSelectedMod(id)
         
     #toolside stuff
     
