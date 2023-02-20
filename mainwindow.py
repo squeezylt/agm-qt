@@ -35,19 +35,31 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(parent)
         uic.loadUi('main.ui',self)
         
+        #callbacks
         self.mod_path_set.connect(self.changeModPath) 
         self.settings_updated.connect(self.saveSettings)
         self.mod_updated.connect(self.updateModTreeWidget)
+        self.active_list.model().rowsInserted.connect(self.handleActiveListSizeChanged)
+        self.active_list.model().rowsRemoved.connect(self.handleActiveListSizeChanged)
         self.add_selected_button.clicked.connect(self.handleAddSelected)
+        self.plus_button.clicked.connect(self.handlePlusButton)
+        self.minus_button.clicked.connect(self.handleMinusButton)
         self.clear_button.clicked.connect(self.handleClearButton)
         self.remove_selected_button.clicked.connect(self.handleRemoveSelected)
         self.mod_rename_button.clicked.connect(self.handleModRenameApply)
 
+        #custom tree setup
         self.xtree = XTreeWidget(QTreeWidget)
         self.mainlayout.addWidget(self.xtree)
         self.xtree.itemChecked.connect(self.handleModToggled)
         self.xtree.itemClicked.connect(self.handleModSelected)
+        
+        
+        #widget things
+        self.mod_rename_button.setEnabled(False)
+        self.category_name_button.setEnabled(False)
 
+        #settings
         self.loadSettings()
         
         self.actionLoad_Mod_Dir.triggered.connect(self.loadModDir)
@@ -166,6 +178,27 @@ class MainWindow(QMainWindow):
         #trigger tree redraw
         self.mod_updated.emit()
         
+    def handlePlusButton(self):
+        if (self.active_list.count() != 1):
+            print("active list not size 1. returning")
+            return
+    
+    def handleMinusButton(self):
+        if (self.active_list.count() != 1):
+            print("active list not size 1. returning")
+            return
+        
+    def handleActiveListSizeChanged(self):
+        active_list_size = self.active_list.count()
+        if active_list_size != 1:
+            self.mod_rename_button.setEnabled(False)
+            self.category_name_button.setEnabled(False)
+            self.sort_mod_label.setText("")
+        else:
+            self.mod_rename_button.setEnabled(True)
+            self.category_name_button.setEnabled(True)
+            current_item_id = self.active_list.item(0).data(DATA_ROLE)
+            self.sort_mod_label.setText(self.mc.getModName(current_item_id))
         
                 
 class TreeWidgetItem(QTreeWidgetItem):

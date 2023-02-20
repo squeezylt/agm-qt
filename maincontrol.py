@@ -95,7 +95,9 @@ class MainControl:
         print("new path for mod is " + new_path)
         mod.setPath(new_path)
         
-
+    def getModName(self, id):
+        mod = self.mod_container.getModById(id)
+        return mod.name()
         
     def isFolderDisabled(self,folder_name : str):
         return "DISABLED" in folder_name
