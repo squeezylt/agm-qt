@@ -64,6 +64,7 @@ class MainWindow(QMainWindow):
         self.loadSettings()
         
         self.actionLoad_Mod_Dir.triggered.connect(self.loadModDir)
+        self.actionRefresh_Mod_List.triggered.connect(self.handleRefresh)
         self.show()
 
     def saveSettings(self):
@@ -252,6 +253,10 @@ class MainWindow(QMainWindow):
             self.category_name_button.setEnabled(True)
             current_item_id = self.active_list.item(0).data(DATA_ROLE)
             self.sort_mod_label.setText(self.mc.getModName(current_item_id))
+            
+    def handleRefresh(self):
+        self.mod_path_set.emit(self.mod_path)
+        
         
                 
 class TreeWidgetItem(QTreeWidgetItem):
