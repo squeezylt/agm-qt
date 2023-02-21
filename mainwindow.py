@@ -53,6 +53,7 @@ class MainWindow(QMainWindow):
         self.mainlayout.addWidget(self.xtree)
         self.xtree.itemChecked.connect(self.handleModToggled)
         self.xtree.itemClicked.connect(self.handleModSelected)
+        self.xtree.setHeaderLabel("Mods")
         
         
         #widget things
