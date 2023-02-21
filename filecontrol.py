@@ -27,6 +27,7 @@ def renameFolder(input_folder_path:str, new_folder_name:str):
     except IOError as e:
         print(e.errno)
         print("IO ERROR RENAMING")
+        print ('error message:'), os.strerror(e.errno)
         return ""
     
     return new_mod_path
