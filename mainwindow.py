@@ -101,12 +101,11 @@ class MainWindow(QMainWindow):
         if (not mod_list):
             print("mod list empty")
             return
-        print("mod_list not empty")
         
-        #all unlisted items can use this
+        #all unsorted items can use this
         top_item = TreeWidgetItem()
         top_item.setFlags(top_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
-        top_item.setText(0,"Unlisted")
+        top_item.setText(0,"Unsorted")
     
         for item in mod_list.items():
             
@@ -141,28 +140,16 @@ class MainWindow(QMainWindow):
                     parent_item = cat_top_item
                 else:
                     cat_top_item = find_top_cat[0]
-                    print('found exisiting category, it is ' + cat_top_item.text(0))
                     parent_item = cat_top_item
             
             for cct in categories[1:]:
-                #print('iterating ' + cct + ' category')
-                #find_child_item = self.xtree.findItems(first_cat,QtCore.Qt.MatchFlag.MatchExactly,0)
-                #child_item = parent_item.child(1)
+
                 child_item = None
-                #for child in parent_item.child():
                 for i in range(parent_item.childCount()):
                     if parent_item.child(i).text(0) == cct:
                         child_item = parent_item.child(i)
-                    #    print('yes')
-                    #else:
-                    #    print('nope')
-                    print('child text name is ' + parent_item.child(i).text(0) + ' while cct is ' + cct)
-                
-                if child_item:
-                    print('found child for parent' + parent_item.text(0) + ' and its name is ' + child_item.text(0) )
                
                 if child_item and child_item.text(0) == cct:
-                    print('Found child item for' + child_item.text(0))
                     child_item = parent_item.child(0)
                 else:
                     
@@ -199,16 +186,18 @@ class MainWindow(QMainWindow):
     
     #behavior when we add a mod to the working list
     def handleAddSelected(self):
+        
         active_mod = self.mc.getSelectedMod()
+        if not active_mod:
+            return
         if not str(active_mod.modpath):
             return
-        print("Active mod is" + active_mod.name())
+        
         item = QListWidgetItem(active_mod.name())
         item.setData(DATA_ROLE, active_mod.id())
         
         #add only if the list doesnt have this mod name already
         for i in range (self.active_list.count()):
-            print("looping")
             if self.active_list.item(i).data(DATA_ROLE) == active_mod.id():
                 return 
         
