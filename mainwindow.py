@@ -96,6 +96,7 @@ class MainWindow(QMainWindow):
 
     def updateModTreeWidget(self):
         #i want to rewrite this entire function but my brain hurts
+        #this is cursed. -squeezy
         self.xtree.clear()
         mod_list = self.mc.getModDataStructure()
         
