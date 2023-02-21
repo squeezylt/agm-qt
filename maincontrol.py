@@ -27,8 +27,9 @@ class MainControl:
     
 
     def populateModDataStructure(self):
-        
+        self.mod_container.clear()
         self.__populateModFolders(self.mod_dir)
+        
         if (not self.mod_folders):
             print("mod folders empty")
             return

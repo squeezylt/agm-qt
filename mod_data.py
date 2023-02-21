@@ -22,6 +22,9 @@ class ModContainer:
         return None
     def items(self):
         return self.mod_list
+    def clear(self):
+        self.mod_list.clear()
+        
             
     
     

@@ -260,6 +260,7 @@
      <string>File</string>
     </property>
     <addaction name="actionLoad_Mod_Dir"/>
+    <addaction name="actionRefresh_Mod_List"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -267,6 +268,11 @@
   <action name="actionLoad_Mod_Dir">
    <property name="text">
     <string>Load Mod Dir...</string>
+   </property>
+  </action>
+  <action name="actionRefresh_Mod_List">
+   <property name="text">
+    <string>Refresh Mod List...</string>
    </property>
   </action>
  </widget>
