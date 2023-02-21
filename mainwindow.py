@@ -92,34 +92,9 @@ class MainWindow(QMainWindow):
         dir = QDir(fname)
         if dir.exists():
             self.mod_path_set.emit(fname)
-    '''
-    def updateModTreeWidget(self):
-        self.xtree.clear()
-        mod_list = self.mc.getModDataStructure()
-        
-        if (not mod_list):
-            print("mod list empty")
-            return
-        print("mod_list not empty")
-        for item in mod_list.items():
 
-            tree_item = TreeWidgetItem()
-            tree_item.setFlags(tree_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
-            mod_name = item.name()
-            tree_item.setData(0,DATA_ROLE,item.id())
-
-            if not item.enabled():
-                tree_item.setCheckState(0,QtCore.Qt.Unchecked)
-            else:
-                tree_item.setCheckState(0,QtCore.Qt.Checked)
-            
-            tree_item.setText(0,mod_name)
-            categories = item.getCategories()
-            for cct in categories:
-                print(cct)
-            self.xtree.addTopLevelItem(tree_item)
-'''
     def updateModTreeWidget(self):
+        #i want to rewrite this entire function but my brain hurts
         self.xtree.clear()
         mod_list = self.mc.getModDataStructure()
         
@@ -139,6 +114,7 @@ class MainWindow(QMainWindow):
             tree_item = TreeWidgetItem()
             tree_item.setFlags(tree_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
             mod_name = item.name()
+            #print('in main loop, mod name is ' + mod_name)
             tree_item.setData(0,DATA_ROLE,item.id())
 
             if not item.enabled():
@@ -165,12 +141,25 @@ class MainWindow(QMainWindow):
                     parent_item = cat_top_item
                 else:
                     cat_top_item = find_top_cat[0]
+                    print('found exisiting category, it is ' + cat_top_item.text(0))
                     parent_item = cat_top_item
             
             for cct in categories[1:]:
-                print('iterating ' + cct + ' category')
+                #print('iterating ' + cct + ' category')
                 #find_child_item = self.xtree.findItems(first_cat,QtCore.Qt.MatchFlag.MatchExactly,0)
-                child_item = parent_item.child(0)
+                #child_item = parent_item.child(1)
+                child_item = None
+                #for child in parent_item.child():
+                for i in range(parent_item.childCount()):
+                    if parent_item.child(i).text(0) == cct:
+                        child_item = parent_item.child(i)
+                    #    print('yes')
+                    #else:
+                    #    print('nope')
+                    print('child text name is ' + parent_item.child(i).text(0) + ' while cct is ' + cct)
+                
+                if child_item:
+                    print('found child for parent' + parent_item.text(0) + ' and its name is ' + child_item.text(0) )
                
                 if child_item and child_item.text(0) == cct:
                     print('Found child item for' + child_item.text(0))
