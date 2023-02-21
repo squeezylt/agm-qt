@@ -277,7 +277,7 @@ def main():
 
     app = QApplication(sys.argv)
     window = MainWindow()
-    window.setWindowTitle("AGM Manager")
+    window.setWindowTitle("AGM Manager Beta")
     app.exec_()
 
 if __name__ == "__main__":
