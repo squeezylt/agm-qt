@@ -150,9 +150,7 @@ class MainWindow(QMainWindow):
                     if parent_item.child(i).text(0) == cct:
                         child_item = parent_item.child(i)
                
-                if child_item and child_item.text(0) == cct:
-                    child_item = parent_item.child(0)
-                else:
+                if not child_item:
                     
                     child_item = TreeWidgetItem()
                     child_item.setFlags(cat_top_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
