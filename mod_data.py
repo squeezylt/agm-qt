@@ -47,6 +47,14 @@ class ModClass:
         
     def getCategories(self):
         return self.categories
+    
+    def getCategory(self,level):
+        if len(self.categories) <= level:
+            return None
+        if not self.categories:
+            return None
+        print("returning level " + str(level))
+        return self.categories[level]
         
     def setEnable(self,toggle):
         self.modenabled=toggle

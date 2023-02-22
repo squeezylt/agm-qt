@@ -24,7 +24,11 @@ class MainControl:
     def setModDir(self, path : str):
         self.mod_dir = path
         self.populateModDataStructure()
-    
+        
+    def writeModCategory(self, id, level, category_text):
+        mod = self.mod_container.getModById(id)
+        path = mod.path()
+        cat.writeCategory(path,level,category_text)
 
     def populateModDataStructure(self):
         self.mod_container.clear()
@@ -46,6 +50,17 @@ class MainControl:
     
     def getModDataStructure(self):
         return self.mod_container
+    
+    def getCategories(self,id):
+        mod = self.mod_container.getModById(id)
+        categories = mod.getCategories()
+        return categories
+    
+    def getCategory(self, mod_id, level):
+        mod = self.mod_container.getModById(mod_id)
+        category = mod.getCategory(level)
+        return category
+        
     
     def toggleMod(self,mod_path, state):
         if not os.path.isdir(mod_path):
@@ -119,3 +134,5 @@ class MainControl:
             return "DISABLED" + mod_name
             
         return mod_name
+    
+    

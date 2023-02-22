@@ -14,6 +14,7 @@ import mod_data
 
 
 #usage in qt embedded widget data
+USER_ROLE = QtCore.Qt.UserRole
 DATA_ROLE = QtCore.Qt.UserRole + 1
 EXTRA_DATA_ROLE = QtCore.Qt.UserRole + 2 #reserved, unused?
 
@@ -24,6 +25,13 @@ class MainWindow(QMainWindow):
     settings_updated = pyqtSignal()
     mod_updated = pyqtSignal()
     cat_updated = pyqtSignal(str)
+    refresh = pyqtSignal(str)
+    
+    refresh_mod_list = pyqtSignal()
+    
+    refresh_active_tool_list = pyqtSignal()
+    
+    refresh_sorting_mod = pyqtSignal()
     
     #should change to not use hardcoded ini file. use system abstracted format
     settings = QSettings("mod.ini", QSettings.IniFormat)
@@ -45,8 +53,10 @@ class MainWindow(QMainWindow):
         self.plus_button.clicked.connect(self.handlePlusButton)
         self.minus_button.clicked.connect(self.handleMinusButton)
         self.clear_button.clicked.connect(self.handleClearButton)
+        self.category_name_button.clicked.connect(self.handleCategoryNameButton)
         self.remove_selected_button.clicked.connect(self.handleRemoveSelected)
         self.mod_rename_button.clicked.connect(self.handleModRenameApply)
+        self.category_combo.currentIndexChanged.connect(self.handleCategoryIndexChanged)
 
         #custom tree setup
         self.xtree = XTreeWidget(QTreeWidget)
@@ -59,6 +69,9 @@ class MainWindow(QMainWindow):
         #widget things
         self.mod_rename_button.setEnabled(False)
         self.category_name_button.setEnabled(False)
+        
+        #not yet enabled lol
+        self.minus_button.setEnabled(False)
 
         #settings
         self.loadSettings()
@@ -236,11 +249,52 @@ class MainWindow(QMainWindow):
         if (self.active_list.count() != 1):
             print("active list not size 1. returning")
             return
+        self.category_combo.addItem("Category Level" + str(self.category_combo.count()),self.category_combo.count())
+        
     
     def handleMinusButton(self):
         if (self.active_list.count() != 1):
             print("active list not size 1. returning")
             return
+        
+    def handleCategoryNameButton(self):
+        #handle apply button
+        category_text = self.category_edit.text()
+        level = self.category_combo.itemData(self.category_combo.currentIndex(),USER_ROLE)
+        
+        if not category_text:
+            print('category text empty')
+            return
+        
+        mod_id = self.active_list.item(0).data(DATA_ROLE)
+        if not mod_id:
+            print("Error:couldnt find mod for category naming")
+            return
+        
+        self.mc.writeModCategory(mod_id,level,category_text)
+        self.actionRefresh_Mod_List.triggered.emit()
+        #self.refresh.emit()
+        
+    def handleCategoryIndexChanged(self,index):
+        if self.active_list.count() <= 0:
+            return
+        if self.category_combo.count() <= 0:
+            return
+        print("combo count is " + str(self.category_combo.count()) )
+        
+        if self.active_list.count() == 1:
+            mod_id = self.active_list.item(0).data(DATA_ROLE)
+            level = self.category_combo.itemData(index,USER_ROLE)
+            if level is None:
+                return
+            category = self.mc.getCategory(mod_id, level)
+            if not category:
+                print("no category, returning")
+                return
+            self.category_edit.setText(category)
+        else:
+            self.category_edit.setText("")
+        
         
     def handleActiveListSizeChanged(self):
         active_list_size = self.active_list.count()
@@ -248,15 +302,31 @@ class MainWindow(QMainWindow):
             self.mod_rename_button.setEnabled(False)
             self.category_name_button.setEnabled(False)
             self.sort_mod_label.setText("")
+            self.rename_edit.clear()
+            self.category_combo.clear()
         else:
             self.mod_rename_button.setEnabled(True)
             self.category_name_button.setEnabled(True)
             current_item_id = self.active_list.item(0).data(DATA_ROLE)
             self.sort_mod_label.setText(self.mc.getModName(current_item_id))
+            self.rename_edit.clear()
+            self.category_combo.clear()
+            
+            #get existing categories if they exist
+            mod_id = self.active_list.item(0).data(DATA_ROLE)
+            categories = self.mc.getCategories(mod_id)
+            
+            for i in range(len(categories)):
+                self.category_combo.addItem("Category Level" + str(i),i)
+                
+            
             
     def handleRefresh(self):
+        self.active_list.clear()
         self.mod_path_set.emit(self.mod_path)
-        
+        self.category_combo.clear()
+        self.category_edit.setText("")
+        self.sort_mod_label.setText("")
         
                 
 class TreeWidgetItem(QTreeWidgetItem):
