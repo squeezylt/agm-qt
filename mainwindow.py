@@ -365,28 +365,43 @@ class MainWindow(QMainWindow):
         cat_item = None
         item = None
         name = self.mc.getModName(id)
-        for i in range(self.xtree.topLevelItemCount()):
-            item = self.xtree.topLevelItem(i)
-            cat_item = self.findModTreeIdMatch(item, id)
-            if cat_item:
-                break
-        #if not cat_item:
-        #    return
-        #cat_item.setText(0,name)
+        cat_item = self.getTreeItemById(id)
+        print("cat_item is " + str(cat_item))
+        if not cat_item:
+            print("Cat item not mod in set mod tree name")
+            return
+        print("Setting text to " + name)
+        cat_item.setText(0,name)
         
     
-    #shitty recursion, does the job
-    #will redo this later to actually return the proper value
-    #write now hacked just to set the correct name
-    def findModTreeIdMatch(self,item, id):
-        if item.data(0,DATA_ROLE) == id:
-                item.setText(0,self.mc.getModName(id))
-                return item
+
+
+    def getTreeItemById(self,id,cat_item=None):
+        cat_item = None
+        for i in range(self.xtree.topLevelItemCount()):
+            item = self.xtree.topLevelItem(i)
+            cat_item = self.getRecursiveTreeItemById(item, id)
+            #print("cat_item is " + str(cat_item))
+            if cat_item:
+                print("GOT OUR ITEM")
+                
+                return cat_item
+        return cat_item
+        
+    def getRecursiveTreeItemById(self, item, id):
+        if item.data(0, DATA_ROLE) == id:
+            print("Found the correct return item")
+            return item
 
         for i in range(item.childCount()):
             child = item.child(i)
-            self.findModTreeIdMatch(child, id)
+            result = self.getRecursiveTreeItemById(child, id)
+            if result is not None:
+                # If we found the item in a child, return it
+                return result
+        # If we didn't find the item in this item or any of its children, return None
         return None
+        
     
     def handleModCatUpdated(self,id):
         pass
