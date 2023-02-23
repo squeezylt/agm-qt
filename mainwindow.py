@@ -9,6 +9,7 @@ import os.path
 import sys
 import filecontrol as fc
 import mod_data
+from PyQt5.QtCore import QUuid
 
 #made by squeezylt
 
@@ -24,14 +25,19 @@ class MainWindow(QMainWindow):
     mod_path_set = pyqtSignal(str)   
     settings_updated = pyqtSignal()
     mod_updated = pyqtSignal()
-    cat_updated = pyqtSignal(str)
-    refresh = pyqtSignal(str)
     
-    refresh_mod_list = pyqtSignal()
+    refresh_mod_tree = pyqtSignal()
     
     refresh_active_tool_list = pyqtSignal()
     
     refresh_sorting_mod = pyqtSignal()
+    
+    #single mod has been renamed
+    mod_renamed = pyqtSignal(QUuid)
+    
+    mod_cat_updated = pyqtSignal(QUuid)
+    
+    
     
     #should change to not use hardcoded ini file. use system abstracted format
     settings = QSettings("mod.ini", QSettings.IniFormat)
@@ -77,7 +83,16 @@ class MainWindow(QMainWindow):
         self.loadSettings()
         
         self.actionLoad_Mod_Dir.triggered.connect(self.loadModDir)
-        self.actionRefresh_Mod_List.triggered.connect(self.handleRefresh)
+        
+        #refresh of things when actions are called
+        #self.actionRefresh_Mod_List.triggered.connect(self.handleRefreshModTree)
+        #self.refresh_mod_tree.connect(self.handleRefreshModTree)
+        #self.refresh_active_tool_list.connect(self.handleRefreshActiveToolList)
+        #self.refresh_sorting_mod.connect(self.handleRefreshSortingMod)
+        self.mod_renamed.connect(self.handleModRenamed)
+        self.mod_cat_updated.connect(self.handleModCatUpdated)
+        
+        
         self.show()
 
     def saveSettings(self):
@@ -243,7 +258,8 @@ class MainWindow(QMainWindow):
         self.mc.renameMod(mod_id, new_mod_name)
         
         #trigger tree redraw
-        self.mod_updated.emit()
+        #self.mod_updated.emit()
+        self.mod_renamed.emit(mod_id)
         
     def handlePlusButton(self):
         if (self.active_list.count() != 1):
@@ -320,13 +336,63 @@ class MainWindow(QMainWindow):
                 self.category_combo.addItem("Category Level" + str(i),i)
                 
             
-            
+    '''        
     def handleRefresh(self):
         self.active_list.clear()
         self.mod_path_set.emit(self.mod_path)
         self.category_combo.clear()
         self.category_edit.setText("")
         self.sort_mod_label.setText("")
+    '''
+    # slots
+    def handleModRenamed(self,id):
+        name = self.mc.getModName(id)
+        if not name:
+            return
+        
+        if self.active_list.count() == 1:
+            #have a mod in list
+            self.sort_mod_label.setText(name)
+            
+            active_id = self.active_list.item(0).data(DATA_ROLE)
+            if active_id == id:
+                self.active_list.item(0).setText(name)
+            self.setTreeModItemName(id)
+                
+    
+    #this isnt most efficient or correct. but working        
+    def setTreeModItemName(self,id):
+        cat_item = None
+        item = None
+        name = self.mc.getModName(id)
+        for i in range(self.xtree.topLevelItemCount()):
+            item = self.xtree.topLevelItem(i)
+            cat_item = self.findModTreeIdMatch(item, id)
+            if cat_item:
+                break
+        #if not cat_item:
+        #    return
+        #cat_item.setText(0,name)
+        
+    
+    #shitty recursion, does the job
+    #will redo this later to actually return the proper value
+    #write now hacked just to set the correct name
+    def findModTreeIdMatch(self,item, id):
+        if item.data(0,DATA_ROLE) == id:
+                item.setText(0,self.mc.getModName(id))
+                return item
+
+        for i in range(item.childCount()):
+            child = item.child(i)
+            self.findModTreeIdMatch(child, id)
+        return None
+    
+    def handleModCatUpdated(self,id):
+        pass
+                
+        
+    
         
                 
 class TreeWidgetItem(QTreeWidgetItem):
