@@ -13,6 +13,10 @@ class MainWindow(QMainWindow):
     #lower menu icons
     bottom_icons = []
     
+    home_button = None
+    menu_button = None
+    settings_button = None
+    
     def __init__(self, parent=None):
 
         super(MainWindow, self).__init__(parent)
@@ -20,7 +24,7 @@ class MainWindow(QMainWindow):
         print("initialized ui")
         
         self.setupMenuBar()
-        self.top_icons[0].clicked.connect(lambda: self.toggleMenu(250, True))
+        self.menu_button.clicked.connect(lambda: self.toggleMenu(250, True))
         self.show()
         #self.label_3.setWidth(0)
 
@@ -28,28 +32,35 @@ class MainWindow(QMainWindow):
         ########################################################################
 
         # PAGE 1
-        #self.ui.btn_page_1.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.ui.page_1))
+        self.home_button.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_1))
         #self.home_button.setStyleSheet('text-align: left;')
+        
+        #settings page
+        self.settings_button.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_3))
        
         
         
         
     def setupMenuBar(self):
-        self.top_icons.append(self.addTopMenuIcon("", "resources/menu_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n"))
+        
+        self.menu_button = self.addTopMenuIcon("", "resources/menu_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
         #self.top_icons[0].setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.top_icons.append(self.menu_button)
         self.top_menu_grid.addWidget(self.top_icons[0])
         self.top_menu_grid.addWidget(self.top_icons[0])
+
         
         vspace = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed)
         self.top_menu_grid.addItem(vspace)
-        self.top_icons.append(self.addTopMenuIcon("Home", "resources/home_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n"))
-    
+        self.home_button = self.addTopMenuIcon("Home", "resources/home_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
+        self.top_icons.append(self.home_button)
+        
         for icon in self.top_icons[1:]:
             icon.hideText()
             self.top_menu_grid.addWidget(icon)
             
-        self.bottom_icons.append(self.addTopMenuIcon("Settings", "resources/settings_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n"))
-        
+        self.settings_button = self.addTopMenuIcon("Settings", "resources/settings_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
+        self.bottom_icons.append(self.settings_button)
         for icon in self.bottom_icons:
             icon.hideText()
             self.lower_menu_grid.addWidget(icon)
