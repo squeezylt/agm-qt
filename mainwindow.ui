@@ -149,13 +149,13 @@
         <widget class="QFrame" name="frame_left_menu">
          <property name="minimumSize">
           <size>
-           <width>70</width>
+           <width>50</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>70</width>
+           <width>50</width>
            <height>16777215</height>
           </size>
          </property>
@@ -187,7 +187,7 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item alignment="Qt::AlignTop">
+          <item>
            <widget class="QFrame" name="frame_top_menus">
             <property name="styleSheet">
              <string notr="true"/>
@@ -199,142 +199,24 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
-             <property name="spacing">
-              <number>0</number>
-             </property>
              <property name="leftMargin">
-              <number>0</number>
+              <number>11</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>11</number>
              </property>
              <property name="rightMargin">
-              <number>0</number>
+              <number>11</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>11</number>
              </property>
              <item>
-              <widget class="QPushButton" name="btn_Toggle">
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(35, 35, 35);
-	border: 0px solid;
-}
-QPushButton:hover {
-	background-color: rgb(85, 170, 255);
-}</string>
+              <layout class="QGridLayout" name="top_menu_grid" rowstretch="0">
+               <property name="leftMargin">
+                <number>0</number>
                </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>resources/menu_icon.png</normaloff>resources/menu_icon.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>50</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>25</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item alignment="Qt::AlignLeft">
-              <widget class="QPushButton" name="home_button">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(35, 35, 35);
-	border: 0px solid;
-}
-QPushButton:hover {
-	background-color: rgb(85, 170, 255);
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>resources/home_icon.png</normaloff>resources/home_icon.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>40</width>
-                 <height>27</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btn_page_2">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(35, 35, 35);
-	border: 0px solid;
-}
-QPushButton:hover {
-	background-color: rgb(85, 170, 255);
-}</string>
-               </property>
-               <property name="text">
-                <string>Ex1</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btn_page_3">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(35, 35, 35);
-	border: 0px solid;
-}
-QPushButton:hover {
-	background-color: rgb(85, 170, 255);
-}</string>
-               </property>
-               <property name="text">
-                <string>Ex2</string>
-               </property>
-              </widget>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -349,44 +231,21 @@ QPushButton:hover {
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_9">
              <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton">
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(35, 35, 35);
-	border: 0px solid;
-}
-QPushButton:hover {
-	background-color: rgb(85, 170, 255);
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>resources/settings_icon.png</normaloff>resources/settings_icon.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>40</width>
-                 <height>27</height>
-                </size>
-               </property>
-              </widget>
+              <layout class="QGridLayout" name="lower_menu_grid">
+               <item row="1" column="0">
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -410,17 +269,6 @@ QPushButton:hover {
             </property>
             <widget class="QWidget" name="page_1">
              <layout class="QVBoxLayout" name="verticalLayout_7">
-              <item>
-               <layout class="QGridLayout" name="gridLayout_4">
-                <item row="0" column="0">
-                 <widget class="QPushButton" name="pushButton_2">
-                  <property name="text">
-                   <string>PushButton</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
               <item>
                <widget class="QLabel" name="label_1">
                 <property name="font">
