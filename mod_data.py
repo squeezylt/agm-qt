@@ -53,7 +53,7 @@ class ModClass:
             return None
         if not self.categories:
             return None
-        print("returning level " + str(level))
+        #print("returning level " + str(level))
         return self.categories[level]
         
     def setEnable(self,toggle):

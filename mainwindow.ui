@@ -502,7 +502,7 @@
                  <string notr="true">color: #FFF;</string>
                 </property>
                 <property name="text">
-                 <string>PAGE 2</string>
+                 <string>Download mods?</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -524,7 +524,7 @@
                  <string notr="true">color: #FFF;</string>
                 </property>
                 <property name="text">
-                 <string>PAGE 3</string>
+                 <string>Settings</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>

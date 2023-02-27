@@ -175,7 +175,7 @@ class MainWindow(QMainWindow):
     def handleModRenameApply(self):
         #str. name not path
         new_mod_name = self.rename_edit.text()
-        print("New mod name is " + new_mod_name)
+      
         if (not new_mod_name):
             print("mod name null, returing")
             return

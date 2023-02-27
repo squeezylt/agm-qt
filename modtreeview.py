@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QTreeWidgetItem, QTreeWidget, QWidget, QSizePolicy
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtCore import QSettings, pyqtSignal, QDir, QSize
+from PyQt5.QtWidgets import QTreeWidgetItem, QTreeWidget
+from PyQt5 import QtCore
+from PyQt5.QtCore import pyqtSignal
 
 #usage in qt embedded widget data
 USER_ROLE = QtCore.Qt.UserRole
@@ -27,19 +27,18 @@ class XTreeWidget(QTreeWidget):
         
     def getTreeItemById(self,id,cat_item=None):
         cat_item = None
-        for i in range(self.xtree.topLevelItemCount()):
-            item = self.xtree.topLevelItem(i)
+        for i in range(self.topLevelItemCount()):
+            item = self.topLevelItem(i)
             cat_item = self.getRecursiveTreeItemById(item, id)
             #print("cat_item is " + str(cat_item))
             if cat_item:
-                print("GOT OUR ITEM")
                 
                 return cat_item
         return cat_item
         
     def getRecursiveTreeItemById(self, item, id):
         if item.data(0, DATA_ROLE) == id:
-            print("Found the correct return item")
+            #we found the correct
             return item
 
         for i in range(item.childCount()):
@@ -50,29 +49,6 @@ class XTreeWidget(QTreeWidget):
                 return result
         # If we didn't find the item in this item or any of its children, return None
         return None
-    
-class ModTreeView(QWidget):
-    
-    def __init__(self, parent=None):
-        super(ModTreeView, self).__init__(parent)
-        self.xtree = XTreeWidget(QTreeWidget)
-        self.xtree.setParent(self)
-        
-        #self.xtree.itemChecked.connect(self.handleModToggled)
-        #self.xtree.itemClicked.connect(self.handleModSelected)
-        self.xtree.setHeaderLabel("Mods")
-        #self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        #self.xtree.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.show()
-        
-    def sizeHint(self):
-        return self.xtree.sizeHint()
-        #return QSize(15,15)
-    def minimumSizeHint(self):
-        return self.xtree.minimumSizeHint()
-    #def sizePolicy(self) -> 'QSizePolicy':
-    #    return self.xtree.sizePolicy()
-
         
     def updateModTreeWidget(self, mod_list):
         #i want to rewrite this entire function but my brain hurts
@@ -84,7 +60,7 @@ class ModTreeView(QWidget):
         if (not mod_list):
             print("mod list empty")
             return
-        self.xtree.clear()
+        self.clear()
         
         #all unsorted items can use this
         top_item = TreeWidgetItem()
@@ -117,7 +93,7 @@ class ModTreeView(QWidget):
                 first_cat = categories[0]
                 #print("first cat is " + first_cat)
                 #see if the top level item already exists in the tree
-                find_top_cat = self.xtree.findItems(first_cat,QtCore.Qt.MatchFlag.MatchExactly,0)
+                find_top_cat = self.findItems(first_cat,QtCore.Qt.MatchFlag.MatchExactly,0)
                 if len(find_top_cat) == 0:
                     cat_top_item = TreeWidgetItem()
                     cat_top_item.setFlags(cat_top_item.flags() | QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable)
@@ -145,7 +121,7 @@ class ModTreeView(QWidget):
             if len(categories) != 0:
                 parent_item.addChild(tree_item)
                 
-            self.xtree.addTopLevelItem(top_item)
+            self.addTopLevelItem(top_item)
             if len(categories) != 0:
-                self.xtree.addTopLevelItem(cat_top_item)
+                self.addTopLevelItem(cat_top_item)
         
