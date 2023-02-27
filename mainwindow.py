@@ -36,6 +36,7 @@ class MainWindow(QMainWindow):
         
     def setupMenuBar(self):
         self.top_icons.append(self.addTopMenuIcon("", "resources/menu_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n"))
+        #self.top_icons[0].setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.top_menu_grid.addWidget(self.top_icons[0])
         self.top_menu_grid.addWidget(self.top_icons[0])
         
