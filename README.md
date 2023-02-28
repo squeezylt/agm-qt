@@ -5,7 +5,7 @@ Qt 5
 
 ## Build instructions:
 None so far. Still in testing.
-If you want to run this execute the mainwindow.py file with python3
+If you want to run this execute the main.py file with python3
 
 ## Usage
 Select Mod Directory in the File Dropdown menu. You only have to set this once, it will be remembered
