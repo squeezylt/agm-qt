@@ -84,6 +84,7 @@ class MainWindow(QMainWindow):
         self.remove_selected_button.clicked.connect(self.handleRemoveSelected)
         self.mod_rename_button.clicked.connect(self.handleModRenameApply)
         self.category_combo.currentIndexChanged.connect(self.handleCategoryIndexChanged)
+        self.set_mod_dir_button.clicked.connect(self.loadModDir)
         
         #custom tree setup
         self.mod_tree_view = XTreeWidget(QTreeWidget)

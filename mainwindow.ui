@@ -514,6 +514,13 @@
             <widget class="QWidget" name="page_3">
              <layout class="QVBoxLayout" name="verticalLayout_8">
               <item>
+               <widget class="QPushButton" name="set_mod_dir_button">
+                <property name="text">
+                 <string>Set Mod Directory</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QLabel" name="label">
                 <property name="font">
                  <font>
