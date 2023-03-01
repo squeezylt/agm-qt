@@ -13,4 +13,4 @@ Have fun
 
 ## License
 
-This project is licensed under the [GPL-3.0](https://github.com/squeezylt/agm-qt/blob/main/LICENSE.md)
+This project is licensed under the [GPL-3.0](https://github.com/squeezylt/agm-qt/blob/main/LICENSE.md) license. Please take care to follow licensing guidelines if using this code.
