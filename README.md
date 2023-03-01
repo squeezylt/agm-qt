@@ -4,7 +4,7 @@
 This is a mod manager for an anime game at it's core. This project also plans to provide simple gui tooling for mods.
 
 ## Requirements
-Qt 5
+Qt 5, Python 3
 
 ## Build instructions:
 None so far. Still in testing.
