@@ -1,4 +1,6 @@
 from PyQt5.QtCore import QUuid
+import json
+import json_parser as jp
 
 class ModContainer:
     mod_list = []
@@ -41,6 +43,8 @@ class ModClass:
         self.modname = name
         self.modpath = path
         self.uid = QUuid.createUuid()
+        self.readAndPopulateMetadata()
+
         
     def setCategories(self, categories):
         self.categories = categories
@@ -68,6 +72,14 @@ class ModClass:
     def printId(self):
         print(self.uid.toString())
         
+    def readAndPopulateMetadata(self):
+        self.metadata = jp.getModInfo(str(self.path()))
+        cat = self.metadata['categories']
+        if not cat:
+            return
+
+        self.categories = cat  
+        
     def enabled(self):
         return self.modenabled
     def name(self):
@@ -76,6 +88,24 @@ class ModClass:
         return self.modpath
     def id(self):
         return self.uid
+    
+    def updateJsonModInfoFile(self):
+        jp.writeModInfo(str(self.path()), self.metadata)
+    
+    def writeMetaDataSection(self,section,value):
+        #def writeField(modinfo, section, value):
+        self.metadata[section] = value
+        self.updateJsonModInfoFile()
+        
+        #callback to reupdate class info from file
+        self.readAndPopulateMetadata()
+        
+    def appendCategories(self, level, value):
+        if len(self.categories) <= 0 or level >= len(self.categories):
+            self.categories.append(value)
+        else:    
+            self.categories[level] = value
+        self.writeMetaDataSection('categories',self.categories)
         
     
 def main():

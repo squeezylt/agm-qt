@@ -213,7 +213,7 @@ class MainWindow(QMainWindow):
     def changeModPath(self,str):
         self.mod_path = str
         self.mc.setModDir(str)
-        mod_list = self.mc.getModDataStructure()
+        #mod_list = self.mc.getModDataStructure()
         self.updateModTreeWidget()
 
         #on purpose, force settings saving on mod path update
@@ -392,7 +392,7 @@ class MainWindow(QMainWindow):
             return
         
         self.mc.writeModCategory(mod_id,level,category_text)
-        self.actionRefresh_Mod_List.triggered.emit()
+        #self.actionRefresh_Mod_List.triggered.emit()
         #self.refresh.emit()
         
     def handleCategoryIndexChanged(self,index):

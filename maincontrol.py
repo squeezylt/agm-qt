@@ -3,6 +3,7 @@ from pathlib import Path
 import filecontrol as fc
 import mod_data
 import cat_parser as cat
+import json_parser as jp
 
 class MainControl:
 
@@ -28,7 +29,9 @@ class MainControl:
     def writeModCategory(self, id, level, category_text):
         mod = self.mod_container.getModById(id)
         path = mod.path()
-        cat.writeCategory(path,level,category_text)
+        #cat.writeCategory(path,level,category_text)
+        #mod.categories[level] = category_text
+        mod.appendCategories(level,category_text)
 
     def populateModDataStructure(self):
         self.mod_container.clear()
@@ -41,7 +44,9 @@ class MainControl:
             #print("populating mod")
             mod_class = mod_data.ModClass(os.path.basename(mod),mod)
             mod_class.setEnable(not self.isFolderDisabled(mod))
-            mod_class.setCategories(cat.getCategories(mod))
+            #mod_class.setMetadata(jp.getModInfo(mod))
+            #mod_class.setCategories(cat.getCategories(mod))
+            #print("Categories this this mod are " + self.getCategories(mod))
             if not mod_class.enabled():
                 curr_name = os.path.basename(mod)
                 item_stripped = curr_name.replace("DISABLED","")
