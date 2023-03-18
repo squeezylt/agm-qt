@@ -45,7 +45,9 @@ class MainWindow(QMainWindow):
     mod_cat_updated = pyqtSignal(QUuid)
     
     #should change to not use hardcoded ini file. use system abstracted format
-    settings = QSettings("mod.ini", QSettings.IniFormat)
+    settings = QSettings("SMOD, AGMQT")
+    settings.setDefaultFormat(QSettings.IniFormat)
+
     mc = maincontrol.MainControl()
     mod_path = ""
     mod_tree_view = None
