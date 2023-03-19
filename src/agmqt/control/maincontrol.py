@@ -1,16 +1,16 @@
 import os
 from pathlib import Path
-import filecontrol as fc
-import mod_data
-import cat_parser as cat
-import json_parser as jp
+import file.filecontrol as fc
+import control.mod_data as md
+import file.cat_parser as cat
+import file.json_parser as jp
 
 class MainControl:
 
     mod_dir = ""
     mod_folders = []
     selected_mod = None
-    mod_container = mod_data.ModContainer()
+    mod_container = md.ModContainer()
     
 
     def __init__(self, parent=None):
@@ -42,7 +42,7 @@ class MainControl:
             return
         for mod in self.mod_folders:
             #print("populating mod")
-            mod_class = mod_data.ModClass(os.path.basename(mod),mod)
+            mod_class = md.ModClass(os.path.basename(mod),mod)
             mod_class.setEnable(not self.isFolderDisabled(mod))
             #mod_class.setMetadata(jp.getModInfo(mod))
             #mod_class.setCategories(cat.getCategories(mod))

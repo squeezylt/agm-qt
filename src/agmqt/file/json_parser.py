@@ -1,7 +1,10 @@
 import json
 import os
 
-f = open('modinfo.json')
+#cheating a bit
+
+
+f = open('file/modinfo.json')
 metadata_struct = json.load(f)
 
 def getModInfo(path):

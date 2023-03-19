@@ -4,9 +4,11 @@ from PyQt5.QtGui import QPainter, QPixmap
 from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, QRect, QUuid, QSettings, pyqtSignal, QDir
 import PyQt5.QtCore as QtCore
 
-import maincontrol
+#import maincontrol
+from control.maincontrol import MainControl
+from model.modtreeview import XTreeWidget, TreeWidgetItem
+import ui as MYUI
 
-from modtreeview import XTreeWidget, TreeWidgetItem
 
 #made by squeezylt
 
@@ -48,7 +50,7 @@ class MainWindow(QMainWindow):
     settings = QSettings("SMOD, AGMQT")
     settings.setDefaultFormat(QSettings.IniFormat)
 
-    mc = maincontrol.MainControl()
+    mc = MainControl()
     mod_path = ""
     mod_tree_view = None
     
@@ -57,7 +59,7 @@ class MainWindow(QMainWindow):
         
 
         super(MainWindow, self).__init__(parent)
-        uic.loadUi('mainwindow.ui',self)
+        uic.loadUi('ui/mainwindow.ui',self)
         print("initialized ui")
         
         self.setupMenuBar()
@@ -116,7 +118,7 @@ class MainWindow(QMainWindow):
         
     def setupMenuBar(self):
         
-        self.menu_button = self.addTopMenuIcon("", "resources/menu_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
+        self.menu_button = self.addTopMenuIcon("", "resources/images/menu_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
 
         self.top_icons.append(self.menu_button)
         self.top_menu_grid.addWidget(self.menu_button)
@@ -125,10 +127,10 @@ class MainWindow(QMainWindow):
         self.top_menu_grid.addItem(vspace)
         
         #homebutton
-        self.home_button = self.addTopMenuIcon("Home", "resources/home_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
+        self.home_button = self.addTopMenuIcon("Home", "resources/images/home_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
         self.top_icons.append(self.home_button)
         
-        self.gb_button = self.addTopMenuIcon("Download Mods", "resources/gb_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
+        self.gb_button = self.addTopMenuIcon("Download Mods", "resources/images/gb_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
         self.top_icons.append(self.gb_button)
         
         for icon in self.top_icons[1:]:
@@ -136,7 +138,7 @@ class MainWindow(QMainWindow):
             icon.hideText()
             self.top_menu_grid.addWidget(icon)
             
-        self.settings_button = self.addTopMenuIcon("Settings", "resources/settings_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
+        self.settings_button = self.addTopMenuIcon("Settings", "resources/images/settings_icon.png", "\n	color: rgb(255, 255, 255);\n	background-color: rgb(35, 35, 35);\n	border: 0px solid;\n}\nQPushButton:hover {\n	background-color: rgb(85, 170, 255);\n")
         self.bottom_icons.append(self.settings_button)
         for icon in self.bottom_icons:
             icon.hideText()

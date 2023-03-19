@@ -1,13 +1,13 @@
 
 from PyQt5.QtWidgets import QApplication
-from mainwindow import MainWindow
+from view import mainwindow
 
 import sys
 
 def main():
 
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = mainwindow.MainWindow()
     window.setWindowTitle("AGM Manager Beta")
     app.exec_()
 

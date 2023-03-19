@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QUuid
 import json
-import json_parser as jp
+import file.json_parser as jp
 
 class ModContainer:
     mod_list = []
